@@ -31,7 +31,7 @@
 								   <muleVersion>4.2.0</muleVersion>
 								   <username>sravan345</username>
 								   <password>Eaiesb123</password>
-								   <applicationName>calculator_mule4</applicationName>
+								   <applicationName>calculator-mule4</applicationName>
 								   <environment>Sandbox</environment>
 								   <properties>
 								   <env>${env}</env>
