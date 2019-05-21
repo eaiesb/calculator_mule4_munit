@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="Substraction.xml" />
+	<munit:test name="Substraction-calciFlowTest" description="Test" doc:id="9983c238-3891-4a7c-957a-01ab93a59aa4" >
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="8d54d1c8-9819-4fbc-a94d-ee19e863d814" >
+				<munit:variables >
+					<munit:variable key="Operator" value="Subtraction" />
+					<munit:variable key="Value1" value="50" />
+					<munit:variable key="Value2" value="30" />
+				</munit:variables>
+			</munit:set-event>
+			<flow-ref doc:name="Flow-ref to calciFlow" doc:id="7f557965-40a8-4b71-bfdd-8da25015b177" name="calciFlow"/>
+			<logger level="INFO" doc:name="Logger" doc:id="f6c7b15d-9794-4528-9341-fe3fe7a02561" message="#[payload]"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="ae553418-5ba1-4017-8c12-6e07af220097" expression="#[payload]" is='#[MunitTools::equalTo(Sub: "20" as Number)]' message="failed"/>
+		</munit:validation>
+	</munit:test>
+
+
+</mule>

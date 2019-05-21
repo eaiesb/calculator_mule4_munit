@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="calci-test-suite.xml" />
+	<munit:test name="Addition" description="Test" doc:id="917131c7-e7e7-4e33-9981-34afa82d74af" >
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="e2a39aa0-069c-4f0d-8e26-2a4a41e654b8" >
+				<munit:variables >
+					<munit:variable key="Operator" value="Addition" />
+					<munit:variable key="Value2" value="20" />
+					<munit:variable key="Value1" value="10" />
+				</munit:variables>
+			</munit:set-event>
+			<flow-ref doc:name="Flow-ref to calciFlow" doc:id="280a8a2f-e650-4627-9079-4e965374edec" name="calciFlow"/>
+			<logger level="INFO" doc:name="Logger" doc:id="a702ed21-1982-45ad-b409-4eb2c3068481" message="#[payload]"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="0ba350ab-8ddf-4633-8ad4-900b9c90cf94" expression="#[payload]" is='#[MunitTools::equalTo(Add: "30" as Number)]' message="failed" />
+		</munit:validation>
+	</munit:test>
+
+
+</mule>

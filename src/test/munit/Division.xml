@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="Division.xml" />
+	<munit:test name="Division-calciFlowTest" description="Test" doc:id="dbaa95b3-249f-4c5c-bca2-482809f454a0" >
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="ed0bd590-2a3d-44d9-bced-be8f1d178d08" >
+				<munit:variables >
+					<munit:variable key="Operator" value="Division" />
+					<munit:variable key="Value2" value="5" />
+					<munit:variable key="Value1" value="10" />
+				</munit:variables>
+			</munit:set-event>
+			<flow-ref doc:name="Flow-ref to calciFlow" doc:id="50f7f13b-5848-4d0f-a2be-6b8acb61728e" name="calciFlow"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="9616fba1-c140-4725-93cc-404b17a8cd0b" expression="#[payload]" is='#[MunitTools::equalTo(Div: "2" as Number)]' message="failed"/>
+		</munit:validation>
+	</munit:test>
+
+
+</mule>

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="c34913c9-83d2-472b-a36e-f5d0bd08b15e" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<configuration-properties doc:name="Configuration properties" doc:id="3d70988d-a540-4027-8479-2379396d7b26" file="${env}.properties" />
+	<flow name="calciFlow" doc:id="11b0d9b5-d79f-4a79-acd5-a5fc4103f907" >
+		<http:listener doc:id="20f4ccfd-5a2e-4109-a874-4a91aa7208de" doc:name="" config-ref="HTTP_Listener_config" path="/"/>
+		<set-variable value="#[attributes.queryParams.Operator]" doc:name="Set Variable" doc:id="7432eb5f-1fd0-46c9-99d6-69a2312b37b8" variableName="operator"/>
+		<set-variable value="#[attributes.queryParams.Value1]" doc:name="Set Variable" doc:id="3cbd7599-c6b5-42ff-9940-a0259cdff80f" variableName="value1"/>
+		<set-variable value="#[attributes.queryParams.Value2]" doc:name="Set Variable" doc:id="8c8d0846-ea8b-48d4-a93c-ac1515731a6f" variableName="value2"/>
+		<logger level="INFO" doc:name="Logger" doc:id="5f9ca1e3-9e9d-425c-a251-b153607c3f4c" message="#[vars.operator]"/>
+		<logger level="INFO" doc:name="Logger" doc:id="1c63e4ef-2b3f-4a34-bfc6-2d02f72557d2" message="#[vars.value2]"/>
+		<choice doc:name="Choice" doc:id="2a42e43d-be47-44fe-9412-2e664991572e" >
+			<when expression="#[vars.operator == 'Addition']" >
+				<ee:transform doc:name="Addition" doc:id="e7a4b0d3-4b02-47a9-b0e5-af9dd96250da" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+Add: vars.value1 as String + vars.value2 as String
+
+}]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+				<logger level="INFO" doc:name="Logger" doc:id="573407ba-a132-4f35-b4cf-5b8f33b3d5ac" message="#[payload]"/>
+			</when>
+			<when expression="#[vars.operator == 'Subtraction']" >
+				<ee:transform doc:name="Substraction" doc:id="e9ad0126-8199-40fd-8e9c-8e9388839068" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+Sub: vars.value1 as String  - vars.value2 as String
+
+}]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+				<logger level="INFO" doc:name="Logger" doc:id="f8139829-4c1c-4837-8197-cbe06ca6ac17" message="#[payload]"/>
+			</when>
+			<when expression="#[vars.operator == 'Multiplication']" >
+				<ee:transform doc:name="Multiplication" doc:id="31eef5d9-4813-490e-8158-c8f63ba4e523">
+					<ee:message>
+						<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+Mult: vars.value1 as String  * vars.value2 as String
+
+}]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+				<logger level="INFO" doc:name="Logger" doc:id="156db3b7-00c3-42c5-8907-c6f98840b20b" message="#[payload]"/>
+			</when>
+			<when expression="#[vars.operator == 'Division']" >
+				<ee:transform doc:name="Division" doc:id="430f5583-2c91-4bfc-b9fa-88c2d3b68327" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+Div: vars.value1 as String  / vars.value2 as String
+
+}]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+				<logger level="INFO" doc:name="Logger" doc:id="229e77c4-530d-4f2a-bc06-fa20b82ff803" message="#[payload]"/>
+			</when>
+			<otherwise >
+				<logger level="INFO" doc:name="Logger" doc:id="e24029a6-e9a8-4bc9-b261-aa8206b64b11" message="None No specific Operation choosed"/>
+			</otherwise>
+		</choice>
+		<logger level="INFO" doc:name="Logger" doc:id="0c6be45c-804e-4144-9afd-79c762f974c4" message="#[&quot;from&quot; ++ p('environment')]"/>
+	</flow>
+</mule>
